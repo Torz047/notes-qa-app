@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Notes Q&A</title>
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -275,6 +276,26 @@
     .img-append-btn { font-size: 12px; font-weight: 600; color: #fff; background: var(--accent); border: none; border-radius: 7px; padding: 5px 14px; cursor: pointer; transition: opacity 0.15s; }
     .img-append-btn:hover { opacity: 0.85; }
     .img-result-text { font-size: 13px; color: var(--text); line-height: 1.75; white-space: pre-wrap; }
+
+    /* ── EXCEL READER ── */
+    .excel-reader { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 14px; }
+    .excel-reader-title { font-size: 13px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
+    .excel-reader-title .pill-green { font-size: 10px; font-weight: 600; background: #e0f0ff; color: #1a6fb5; padding: 2px 8px; border-radius: 20px; }
+    .excel-drop-zone { border: 2px dashed var(--border2); border-radius: var(--radius); padding: 28px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--bg); position: relative; }
+    .excel-drop-zone:hover, .excel-drop-zone.drag-over { border-color: #1a6fb5; background: #e8f4ff; }
+    .excel-drop-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .excel-sheet-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+    .sheet-tab { padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border2); background: var(--bg); font-size: 12px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+    .sheet-tab.active { background: #1a6fb5; color: #fff; border-color: #1a6fb5; }
+    .excel-preview { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: auto; max-height: 240px; }
+    .excel-preview table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .excel-preview th { background: var(--surface2); padding: 7px 12px; text-align: left; font-weight: 600; color: var(--text); border-bottom: 1px solid var(--border2); white-space: nowrap; position: sticky; top: 0; }
+    .excel-preview td { padding: 6px 12px; border-bottom: 1px solid var(--border); color: var(--muted); white-space: nowrap; }
+    .excel-preview tr:last-child td { border-bottom: none; }
+    .excel-file-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: var(--surface2); border-radius: var(--radius); border: 1px solid var(--border); }
+    .excel-file-name { font-size: 12px; color: var(--muted); font-weight: 500; }
+    .excel-result-actions { display: flex; align-items: center; justify-content: space-between; }
+    .excel-row-count { font-size: 11px; color: var(--hint); }
   </style>
 </head>
 <body>
@@ -370,6 +391,38 @@
               <button class="img-append-btn" onclick="appendToNotes()">+ Add to notes</button>
             </div>
             <div class="img-result-text" id="img-result-text"></div>
+          </div>
+        </div>
+
+        <!-- EXCEL READER -->
+        <div class="section-label">Read Excel / CSV → add to notes</div>
+        <div class="excel-reader">
+          <div class="excel-reader-title">
+            📊 Excel &amp; CSV Reader
+            <span class="pill-green">No AI needed</span>
+          </div>
+
+          <div class="excel-drop-zone" id="excel-drop-zone"
+            ondragover="event.preventDefault();this.classList.add('drag-over')"
+            ondragleave="this.classList.remove('drag-over')"
+            ondrop="handleExcelDrop(event)">
+            <input type="file" accept=".xlsx,.xls,.csv" onchange="handleExcelFile(this.files[0])" id="excel-file-input" />
+            <div class="img-drop-icon">📂</div>
+            <div class="img-drop-label">Drop an Excel or CSV file here or click to upload</div>
+            <div class="img-drop-sub">Supports .xlsx, .xls, .csv</div>
+          </div>
+
+          <div id="excel-loaded" style="display:none;flex-direction:column;gap:12px;">
+            <div class="excel-file-bar">
+              <span class="excel-file-name" id="excel-file-name">file.xlsx</span>
+              <button class="img-clear-btn" onclick="clearExcel()" title="Remove file">×</button>
+            </div>
+            <div class="excel-sheet-tabs" id="excel-sheet-tabs"></div>
+            <div class="excel-preview" id="excel-preview"></div>
+            <div class="excel-result-actions">
+              <span class="excel-row-count" id="excel-row-count"></span>
+              <button class="img-append-btn" style="background:#1a6fb5;" onclick="appendExcelToNotes()">+ Add to notes</button>
+            </div>
           </div>
         </div>
 
@@ -884,6 +937,109 @@
     textarea.style.boxShadow = '0 0 0 3px rgba(45,106,79,0.15)';
     setTimeout(() => { textarea.style.borderColor = ''; textarea.style.boxShadow = ''; }, 1200);
   }
+
+  /* ── EXCEL READER ── */
+  let excelWorkbook = null;
+  let excelActiveSheet = null;
+  let excelParsedSheets = {};
+
+  function handleExcelDrop(e) {
+    e.preventDefault();
+    document.getElementById('excel-drop-zone').classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) handleExcelFile(file);
+  }
+
+  function handleExcelFile(file) {
+    if (!file) return;
+    const name = file.name.toLowerCase();
+    if (!name.endsWith('.xlsx') && !name.endsWith('.xls') && !name.endsWith('.csv')) {
+      alert('Please upload an .xlsx, .xls, or .csv file.');
+      return;
+    }
+    document.getElementById('excel-file-name').textContent = file.name;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const data = new Uint8Array(e.target.result);
+        excelWorkbook = XLSX.read(data, { type: 'array', cellDates: true });
+        excelParsedSheets = {};
+        excelWorkbook.SheetNames.forEach(sheetName => {
+          const ws = excelWorkbook.Sheets[sheetName];
+          excelParsedSheets[sheetName] = XLSX.utils.sheet_to_json(ws, { defval: '' });
+        });
+        const tabs = document.getElementById('excel-sheet-tabs');
+        tabs.innerHTML = excelWorkbook.SheetNames.map((n, i) =>
+          `<button class="sheet-tab ${i===0?'active':''}" onclick="selectSheet(this,'${n.replace(/\/g,'\\').replace(/'/g,"\'")}'">${n}</button>`
+        ).join('');
+        excelActiveSheet = excelWorkbook.SheetNames[0];
+        renderSheetPreview(excelActiveSheet);
+        document.getElementById('excel-drop-zone').style.display = 'none';
+        const loaded = document.getElementById('excel-loaded');
+        loaded.style.display = 'flex';
+        loaded.style.flexDirection = 'column';
+      } catch(err) {
+        alert('Could not read file: ' + err.message);
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  function selectSheet(btn, sheetName) {
+    excelActiveSheet = sheetName;
+    document.querySelectorAll('.sheet-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    renderSheetPreview(sheetName);
+  }
+
+  function renderSheetPreview(sheetName) {
+    const rows = excelParsedSheets[sheetName];
+    const preview = document.getElementById('excel-preview');
+    const countEl = document.getElementById('excel-row-count');
+    if (!rows || !rows.length) {
+      preview.innerHTML = '<p style="padding:16px;font-size:13px;color:var(--hint);">Sheet is empty.</p>';
+      countEl.textContent = '0 rows';
+      return;
+    }
+    const headers = Object.keys(rows[0]);
+    const previewRows = rows.slice(0, 50);
+    preview.innerHTML = `<table>
+      <thead><tr>${headers.map(h => `<th>${esc(String(h))}</th>`).join('')}</tr></thead>
+      <tbody>${previewRows.map(row =>
+        `<tr>${headers.map(h => `<td>${esc(String(row[h] ?? ''))}</td>`).join('')}</tr>`
+      ).join('')}</tbody>
+    </table>`;
+    countEl.textContent = `${rows.length} rows · ${headers.length} columns${rows.length > 50 ? ' (previewing first 50)' : ''}`;
+  }
+
+  function clearExcel() {
+    excelWorkbook = null;
+    excelActiveSheet = null;
+    excelParsedSheets = {};
+    document.getElementById('excel-loaded').style.display = 'none';
+    document.getElementById('excel-drop-zone').style.display = '';
+    document.getElementById('excel-file-input').value = '';
+  }
+
+  function appendExcelToNotes() {
+    if (!excelActiveSheet || !excelParsedSheets[excelActiveSheet]) return;
+    const rows = excelParsedSheets[excelActiveSheet];
+    if (!rows.length) { alert('Sheet is empty.'); return; }
+    const headers = Object.keys(rows[0]);
+    const timestamp = new Date().toLocaleString();
+    let text = `[Excel data — Sheet: "${excelActiveSheet}" — ${timestamp}]\n`;
+    text += headers.join(' | ') + '\n';
+    text += headers.map(() => '---').join(' | ') + '\n';
+    rows.forEach(row => { text += headers.map(h => String(row[h] ?? '')).join(' | ') + '\n'; });
+    const textarea = document.getElementById('notes-input');
+    const existing = textarea.value.trim();
+    textarea.value = existing ? existing + '\n\n---\n' + text : text;
+    textarea.scrollTop = textarea.scrollHeight;
+    textarea.style.borderColor = '#1a6fb5';
+    textarea.style.boxShadow = '0 0 0 3px rgba(26,111,181,0.15)';
+    setTimeout(() => { textarea.style.borderColor = ''; textarea.style.boxShadow = ''; }, 1200);
+  }
+
 </script>
 </body>
 </html>
