@@ -730,7 +730,7 @@
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
           max_tokens: 1000,
-          system: `You are a helpful assistant. Answer questions strictly based on the notes below. If the answer isn't in the notes, say so politely.\n\n---\nNOTES:\n${notes}\n---`,
+          system: `You are a helpful assistant. Answer questions strictly based on the notes below. If the information needed to answer is not found in the notes, respond with exactly: "Apologies, can't answer since inquiry is not in the admin's notes." Do not make up or infer information outside the notes.\n\n---\nNOTES:\n${notes}\n---`,
           messages: [{ role: 'user', content: q }]
         })
       });
