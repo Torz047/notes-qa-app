@@ -349,7 +349,9 @@
       <div class="panel active" id="apanel-notes">
         <div class="api-row">
           <label>Gemini API key</label>
-          <input type="password" id="api-key-input" placeholder="AIza..." />
+          <input type="password" id="api-key-input" placeholder="AIza..." onkeydown="if(event.key==='Enter')saveApiKey()" />
+          <button class="btn-primary" id="save-key-btn" onclick="saveApiKey()" style="white-space:nowrap;padding:7px 16px;font-size:12px;">Save key</button>
+          <span id="key-save-ok" style="font-size:12px;color:var(--success);visibility:hidden;white-space:nowrap;">Saved ✓</span>
         </div>
 
         <!-- IMAGE ANALYZER -->
@@ -610,6 +612,18 @@
     });
     if (t==='history') renderAdminHistory();
     if (t==='users') renderUsers();
+  }
+
+  async function saveApiKey() {
+    const btn = document.getElementById('save-key-btn');
+    const api_key = document.getElementById('api-key-input').value.trim();
+    if (!api_key) { alert('Please enter your Gemini API key first.'); return; }
+    btn.disabled = true; btn.textContent = 'Saving…';
+    await sb.patch('notes', '?id=eq.1', { api_key, updated_at: new Date().toISOString() });
+    btn.disabled = false; btn.textContent = 'Save key';
+    const ok = document.getElementById('key-save-ok');
+    ok.style.visibility = 'visible';
+    setTimeout(() => ok.style.visibility = 'hidden', 2000);
   }
 
   async function saveNotes() {
