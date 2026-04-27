@@ -247,6 +247,34 @@
     @keyframes spin { to { transform: rotate(360deg); } }
 
     @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── IMAGE ANALYZER ── */
+    .img-analyzer { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 14px; }
+    .img-analyzer-title { font-size: 13px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
+    .img-analyzer-title .pill { font-size: 10px; font-weight: 600; background: var(--accent-lt); color: var(--accent); padding: 2px 8px; border-radius: 20px; }
+    .img-drop-zone { border: 2px dashed var(--border2); border-radius: var(--radius); padding: 28px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--bg); position: relative; }
+    .img-drop-zone:hover, .img-drop-zone.drag-over { border-color: var(--accent); background: var(--accent-lt); }
+    .img-drop-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .img-drop-icon { font-size: 28px; margin-bottom: 8px; }
+    .img-drop-label { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+    .img-drop-sub { font-size: 11px; color: var(--muted); }
+    .img-preview-wrap { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); background: var(--bg); display: none; flex-direction: column; }
+    .img-preview-wrap.has-image { display: flex; }
+    .img-preview { width: 100%; max-height: 220px; object-fit: contain; background: #f0ede8; }
+    .img-preview-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: var(--surface2); border-top: 1px solid var(--border); }
+    .img-preview-name { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 200px; }
+    .img-clear-btn { background: none; border: none; color: var(--hint); font-size: 18px; cursor: pointer; line-height: 1; padding: 0 4px; transition: color 0.15s; }
+    .img-clear-btn:hover { color: var(--danger); }
+    .img-prompt-row { display: flex; gap: 8px; }
+    .img-prompt-row input { flex: 1; border: 1px solid var(--border2); border-radius: var(--radius); padding: 10px 14px; font-size: 13px; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text); background: var(--bg); transition: border-color 0.15s; }
+    .img-prompt-row input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,106,79,0.1); }
+    .img-result { background: var(--accent-lt); border: 1px solid rgba(45,106,79,0.2); border-radius: var(--radius); padding: 14px 16px; display: none; }
+    .img-result.visible { display: block; }
+    .img-result-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .img-result-label { font-size: 11px; font-weight: 600; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase; }
+    .img-append-btn { font-size: 12px; font-weight: 600; color: #fff; background: var(--accent); border: none; border-radius: 7px; padding: 5px 14px; cursor: pointer; transition: opacity 0.15s; }
+    .img-append-btn:hover { opacity: 0.85; }
+    .img-result-text { font-size: 13px; color: var(--text); line-height: 1.75; white-space: pre-wrap; }
   </style>
 </head>
 <body>
@@ -302,6 +330,49 @@
           <label>Anthropic API key</label>
           <input type="password" id="api-key-input" placeholder="sk-ant-..." />
         </div>
+
+        <!-- IMAGE ANALYZER -->
+        <div class="section-label">Analyze image → add to notes</div>
+        <div class="img-analyzer">
+          <div class="img-analyzer-title">
+            🖼️ Image Analyzer
+            <span class="pill">AI-powered</span>
+          </div>
+
+          <div class="img-drop-zone" id="img-drop-zone"
+            ondragover="event.preventDefault();this.classList.add('drag-over')"
+            ondragleave="this.classList.remove('drag-over')"
+            ondrop="handleImgDrop(event)">
+            <input type="file" accept="image/*" onchange="handleImgFile(this.files[0])" />
+            <div class="img-drop-icon">📎</div>
+            <div class="img-drop-label">Drop an image here or click to upload</div>
+            <div class="img-drop-sub">Supports PNG, JPG, JPEG, WEBP · You can also paste with Ctrl+V</div>
+          </div>
+
+          <div class="img-preview-wrap" id="img-preview-wrap">
+            <img class="img-preview" id="img-preview" src="" alt="Preview" />
+            <div class="img-preview-bar">
+              <span class="img-preview-name" id="img-preview-name">image.png</span>
+              <button class="img-clear-btn" onclick="clearImage()" title="Remove image">×</button>
+            </div>
+          </div>
+
+          <div class="img-prompt-row">
+            <input type="text" id="img-prompt" placeholder='Optional: "Extract all table data" or "List all items and quantities"' />
+            <button class="btn-primary" id="img-analyze-btn" onclick="analyzeImage()" style="white-space:nowrap;">
+              Analyze
+            </button>
+          </div>
+
+          <div class="img-result" id="img-result">
+            <div class="img-result-header">
+              <span class="img-result-label">✦ AI Analysis</span>
+              <button class="img-append-btn" onclick="appendToNotes()">+ Add to notes</button>
+            </div>
+            <div class="img-result-text" id="img-result-text"></div>
+          </div>
+        </div>
+
         <div class="section-label">Team notes</div>
         <div class="card">
           <textarea id="notes-input" placeholder="Paste your notes here — meeting minutes, SOPs, project docs…"></textarea>
@@ -683,6 +754,116 @@
 
   function esc(s) {
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /* ── IMAGE ANALYZER ── */
+  let imgBase64 = null;
+  let imgMediaType = 'image/png';
+
+  function handleImgFile(file) {
+    if (!file || !file.type.startsWith('image/')) return;
+    imgMediaType = file.type || 'image/png';
+    const reader = new FileReader();
+    reader.onload = e => {
+      imgBase64 = e.target.result.split(',')[1];
+      document.getElementById('img-preview').src = e.target.result;
+      document.getElementById('img-preview-name').textContent = file.name;
+      document.getElementById('img-preview-wrap').classList.add('has-image');
+      document.getElementById('img-drop-zone').style.display = 'none';
+      document.getElementById('img-result').classList.remove('visible');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function handleImgDrop(e) {
+    e.preventDefault();
+    document.getElementById('img-drop-zone').classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) handleImgFile(file);
+  }
+
+  function clearImage() {
+    imgBase64 = null;
+    document.getElementById('img-preview').src = '';
+    document.getElementById('img-preview-wrap').classList.remove('has-image');
+    document.getElementById('img-drop-zone').style.display = '';
+    document.getElementById('img-result').classList.remove('visible');
+    document.getElementById('img-result-text').textContent = '';
+  }
+
+  // Paste from clipboard (Ctrl+V)
+  document.addEventListener('paste', e => {
+    if (!document.getElementById('apanel-notes').classList.contains('active')) return;
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    for (const item of items) {
+      if (item.type.startsWith('image/')) {
+        handleImgFile(item.getAsFile());
+        break;
+      }
+    }
+  });
+
+  async function analyzeImage() {
+    if (!imgBase64) { alert('Please upload or paste an image first.'); return; }
+    const apiKey = document.getElementById('api-key-input').value.trim();
+    if (!apiKey) { alert('Please enter your Anthropic API key first.'); return; }
+
+    const btn = document.getElementById('img-analyze-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Analyzing…';
+
+    const prompt = document.getElementById('img-prompt').value.trim() ||
+      'Extract and summarize all the important information from this image in a clear, structured format. Include any data, text, tables, or key details you can identify.';
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1500,
+          messages: [{
+            role: 'user',
+            content: [
+              { type: 'image', source: { type: 'base64', media_type: imgMediaType, data: imgBase64 } },
+              { type: 'text', text: prompt }
+            ]
+          }]
+        })
+      });
+
+      const data = await res.json();
+      const result = data.content?.find(b => b.type === 'text')?.text || 'Could not analyze the image.';
+      document.getElementById('img-result-text').textContent = result;
+      document.getElementById('img-result').classList.add('visible');
+    } catch(e) {
+      alert('Analysis failed. Check your API key and try again.');
+      console.error(e);
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Analyze';
+  }
+
+  function appendToNotes() {
+    const result = document.getElementById('img-result-text').textContent;
+    if (!result) return;
+    const textarea = document.getElementById('notes-input');
+    const existing = textarea.value.trim();
+    const timestamp = new Date().toLocaleString();
+    const separator = existing ? '\n\n---\n' : '';
+    textarea.value = existing + separator + `[Image analysis — ${timestamp}]\n${result}`;
+    textarea.scrollTop = textarea.scrollHeight;
+    // Flash the textarea to show it was updated
+    textarea.style.borderColor = 'var(--accent)';
+    textarea.style.boxShadow = '0 0 0 3px rgba(45,106,79,0.15)';
+    setTimeout(() => { textarea.style.borderColor = ''; textarea.style.boxShadow = ''; }, 1200);
   }
 </script>
 </body>
