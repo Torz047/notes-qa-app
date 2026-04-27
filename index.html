@@ -7,303 +7,204 @@
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg:        #f7f5f2;
-      --surface:   #ffffff;
-      --surface2:  #f0ede8;
-      --border:    rgba(0,0,0,0.08);
-      --border2:   rgba(0,0,0,0.14);
-      --text:      #1c1917;
-      --muted:     #78716c;
-      --hint:      #a8a29e;
-      --accent:    #2d6a4f;
-      --accent-lt: #d8ede3;
-      --accent-md: #52b788;
-      --user-bubble: #2d6a4f;
-      --danger:    #c0392b;
-      --success:   #2d6a4f;
-      --radius:    12px;
-      --radius-lg: 18px;
-      --shadow:    0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.05);
+      --bg: #f7f5f2; --surface: #ffffff; --surface2: #f0ede8;
+      --border: rgba(0,0,0,0.08); --border2: rgba(0,0,0,0.14);
+      --text: #1c1917; --muted: #78716c; --hint: #a8a29e;
+      --accent: #2d6a4f; --accent-lt: #d8ede3; --user-bubble: #2d6a4f;
+      --danger: #c0392b; --success: #2d6a4f; --blue: #1a6fb5; --blue-lt: #e0f0ff;
+      --radius: 12px; --radius-lg: 18px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.05);
     }
-
     html, body { height: 100%; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); }
 
-    /* ── LOGIN ── */
+    /* LOGIN */
     #login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px 16px; }
-    .login-wrap { width: 100%; max-width: 400px; animation: fadeUp 0.4s ease; }
+    .login-wrap { width: 100%; max-width: 400px; }
     .login-logo { text-align: center; margin-bottom: 32px; }
-    .login-logo .wordmark { font-family: 'Lora', serif; font-size: 28px; font-weight: 500; color: var(--text); letter-spacing: -0.3px; }
+    .login-logo .wordmark { font-family: 'Lora', serif; font-size: 28px; font-weight: 500; color: var(--text); }
     .login-logo .tagline { font-size: 13px; color: var(--muted); margin-top: 5px; }
-
-    .login-card {
-      background: var(--surface); border: 1px solid var(--border2);
-      border-radius: var(--radius-lg); padding: 30px;
-      box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 18px;
-    }
-
+    .login-card { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 16px; }
     .role-switcher { display: flex; background: var(--surface2); border-radius: 10px; padding: 4px; gap: 4px; }
-    .role-btn {
-      flex: 1; padding: 8px; border: none; background: transparent; border-radius: 8px;
-      font-size: 13px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500;
-      color: var(--muted); cursor: pointer; transition: all 0.18s;
-    }
+    .role-btn { flex: 1; padding: 8px; border: none; background: transparent; border-radius: 8px; font-size: 13px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500; color: var(--muted); cursor: pointer; transition: all 0.18s; }
     .role-btn.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-
     .login-title { font-size: 15px; font-weight: 600; color: var(--text); }
     .field { display: flex; flex-direction: column; gap: 6px; }
-    .field label { font-size: 12px; font-weight: 500; color: var(--muted); letter-spacing: 0.02em; }
-    .field input {
-      border: 1px solid var(--border2); border-radius: var(--radius);
-      padding: 11px 14px; font-size: 14px; font-family: 'Plus Jakarta Sans', sans-serif;
-      color: var(--text); background: var(--bg); transition: border-color 0.15s, box-shadow 0.15s;
-    }
+    .field label { font-size: 12px; font-weight: 500; color: var(--muted); }
+    .field input { border: 1px solid var(--border2); border-radius: var(--radius); padding: 11px 14px; font-size: 14px; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text); background: var(--bg); transition: border-color 0.15s, box-shadow 0.15s; }
     .field input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,106,79,0.12); }
-
-    .login-submit {
-      background: var(--accent); color: #fff; border: none; border-radius: var(--radius);
-      padding: 12px; font-size: 14px; font-weight: 600; font-family: 'Plus Jakarta Sans', sans-serif;
-      cursor: pointer; transition: opacity 0.15s, transform 0.1s;
-    }
+    .login-submit { background: var(--accent); color: #fff; border: none; border-radius: var(--radius); padding: 12px; font-size: 14px; font-weight: 600; font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; transition: opacity 0.15s; }
     .login-submit:hover { opacity: 0.9; }
-    .login-submit:active { transform: scale(0.98); }
     .login-submit:disabled { opacity: 0.5; cursor: default; }
     .login-err { font-size: 12px; color: var(--danger); min-height: 16px; text-align: center; }
 
-    /* ── ADMIN ── */
-    #admin-screen { display: none; min-height: 100vh; flex-direction: column; }
-
-    .admin-topbar {
-      background: var(--surface); border-bottom: 1px solid var(--border);
-      padding: 0 24px; height: 56px; display: flex; align-items: center;
-      justify-content: space-between; position: sticky; top: 0; z-index: 10;
-    }
+    /* TOPBAR */
+    .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
     .topbar-brand { font-family: 'Lora', serif; font-size: 18px; font-weight: 500; }
     .topbar-right { display: flex; align-items: center; gap: 12px; }
-
     .badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.04em; }
     .badge-admin { background: var(--accent-lt); color: var(--accent); }
-    .badge-user  { background: #e0f0ff; color: #1a6fb5; }
-
+    .badge-user { background: var(--blue-lt); color: var(--blue); }
     .topbar-user { font-size: 13px; color: var(--muted); }
-    .signout-btn {
-      background: none; border: 1px solid var(--border2); border-radius: 8px;
-      padding: 6px 14px; font-size: 12px; font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 500; color: var(--muted); cursor: pointer; transition: all 0.15s;
-    }
+    .signout-btn { background: none; border: 1px solid var(--border2); border-radius: 8px; padding: 6px 14px; font-size: 12px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500; color: var(--muted); cursor: pointer; transition: all 0.15s; }
     .signout-btn:hover { color: var(--text); background: var(--surface2); }
 
-    .admin-body {
-      display: flex; flex: 1; max-width: 900px; margin: 0 auto;
-      width: 100%; padding: 32px 24px; gap: 28px;
-    }
-
+    /* ADMIN */
+    #admin-screen { display: none; min-height: 100vh; flex-direction: column; }
+    .admin-body { display: flex; flex: 1; max-width: 960px; margin: 0 auto; width: 100%; padding: 32px 24px; gap: 28px; }
     .admin-sidebar { width: 160px; flex-shrink: 0; display: flex; flex-direction: column; gap: 4px; padding-top: 4px; }
-    .sidebar-tab {
-      padding: 9px 14px; border-radius: 10px; border: none; background: transparent;
-      font-size: 13px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500;
-      color: var(--muted); cursor: pointer; text-align: left; transition: all 0.15s;
-    }
+    .sidebar-tab { padding: 9px 14px; border-radius: 10px; border: none; background: transparent; font-size: 13px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500; color: var(--muted); cursor: pointer; text-align: left; transition: all 0.15s; }
     .sidebar-tab.active { background: var(--accent-lt); color: var(--accent); }
     .sidebar-tab:hover:not(.active) { background: var(--surface2); color: var(--text); }
-
     .admin-content { flex: 1; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
-    .panel { display: none; flex-direction: column; gap: 18px; animation: fadeUp 0.2s ease; }
+    .panel { display: none; flex-direction: column; gap: 18px; }
     .panel.active { display: flex; }
-
     .section-label { font-size: 11px; font-weight: 600; color: var(--hint); letter-spacing: 0.07em; text-transform: uppercase; }
-
+    .section-header { display: flex; align-items: center; justify-content: space-between; }
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow); }
 
+    /* BUTTONS */
+    .btn-primary { background: var(--accent); color: #fff; border: none; border-radius: var(--radius); padding: 10px 22px; font-size: 13px; font-weight: 600; font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; transition: opacity 0.15s; white-space: nowrap; }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-primary:disabled { opacity: 0.4; cursor: default; }
+    .btn-ghost { background: none; border: 1px solid var(--border2); border-radius: 8px; color: var(--muted); font-size: 12px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500; padding: 6px 14px; cursor: pointer; transition: all 0.15s; }
+    .btn-ghost:hover { color: var(--text); background: var(--surface2); }
+
+    /* API ROW */
     .api-row { display: flex; align-items: center; gap: 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 14px; }
     .api-row label { font-size: 12px; font-weight: 500; color: var(--muted); white-space: nowrap; }
     .api-row input { flex: 1; background: transparent; border: none; font-size: 13px; font-family: monospace; color: var(--text); min-width: 0; }
     .api-row input:focus { outline: none; }
+    .save-ok { font-size: 12px; color: var(--success); visibility: hidden; white-space: nowrap; }
 
-    textarea {
-      width: 100%; background: var(--bg); border: 1px solid var(--border2);
-      border-radius: var(--radius); padding: 14px; font-size: 14px;
-      font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text);
-      resize: vertical; min-height: 240px; line-height: 1.75; transition: border-color 0.15s;
-    }
+    /* NOTES */
+    textarea { width: 100%; background: var(--bg); border: 1px solid var(--border2); border-radius: var(--radius); padding: 14px; font-size: 14px; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text); resize: vertical; min-height: 240px; line-height: 1.75; transition: border-color 0.15s, box-shadow 0.15s; }
     textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,106,79,0.1); }
-
     .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; }
-    .save-ok { font-size: 12px; color: var(--success); visibility: hidden; }
 
-    .btn-primary {
-      background: var(--accent); color: #fff; border: none; border-radius: var(--radius);
-      padding: 10px 22px; font-size: 13px; font-weight: 600;
-      font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; transition: opacity 0.15s;
-    }
-    .btn-primary:hover { opacity: 0.88; }
-    .btn-primary:disabled { opacity: 0.4; cursor: default; }
-
-    .btn-ghost {
-      background: none; border: 1px solid var(--border2); border-radius: 8px; color: var(--muted);
-      font-size: 12px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500;
-      padding: 6px 14px; cursor: pointer; transition: all 0.15s;
-    }
-    .btn-ghost:hover { color: var(--text); background: var(--surface2); }
-
+    /* USERS */
     .users-list { display: flex; flex-direction: column; gap: 8px; }
-    .user-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 12px 14px; background: var(--surface2); border-radius: 10px; border: 1px solid var(--border);
-    }
+    .user-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: var(--surface2); border-radius: 10px; border: 1px solid var(--border); }
     .user-row-left { display: flex; align-items: center; gap: 11px; }
-    .avatar {
-      width: 34px; height: 34px; border-radius: 50%; background: var(--accent-lt);
-      color: var(--accent); font-size: 13px; font-weight: 600;
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
+    .avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--accent-lt); color: var(--accent); font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .user-name { font-size: 14px; font-weight: 500; }
-    .user-sub  { font-size: 12px; color: var(--muted); margin-top: 1px; }
-    .btn-remove {
-      background: none; border: 1px solid transparent; border-radius: 8px;
-      font-size: 12px; font-family: 'Plus Jakarta Sans', sans-serif;
-      color: var(--hint); padding: 5px 12px; cursor: pointer; transition: all 0.15s;
-    }
+    .user-sub { font-size: 12px; color: var(--muted); margin-top: 1px; }
+    .btn-remove { background: none; border: 1px solid transparent; border-radius: 8px; font-size: 12px; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--hint); padding: 5px 12px; cursor: pointer; transition: all 0.15s; }
     .btn-remove:hover { border-color: var(--danger); color: var(--danger); background: #fdf0ef; }
-
     .form-row { display: flex; gap: 12px; }
     .form-row .field { flex: 1; }
     .form-err { font-size: 12px; color: var(--danger); min-height: 16px; }
 
+    /* HISTORY */
     .history-list { display: flex; flex-direction: column; gap: 10px; max-height: 520px; overflow-y: auto; }
     .h-item { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
     .h-q { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
     .h-a { font-size: 13px; color: var(--muted); line-height: 1.6; }
     .h-meta { font-size: 11px; color: var(--hint); margin-top: 7px; }
-
     .empty-state { font-size: 13px; color: var(--hint); text-align: center; padding: 40px 0; }
-    .section-header { display: flex; align-items: center; justify-content: space-between; }
 
-    /* ── USER CHAT ── */
+    /* IMAGE ANALYZER */
+    .feature-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 14px; }
+    .feature-title { font-size: 13px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
+    .pill { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; }
+    .pill-green { background: var(--accent-lt); color: var(--accent); }
+    .pill-blue { background: var(--blue-lt); color: var(--blue); }
+    .drop-zone { border: 2px dashed var(--border2); border-radius: var(--radius); padding: 28px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--bg); position: relative; }
+    .drop-zone:hover, .drop-zone.drag-over { border-color: var(--accent); background: var(--accent-lt); }
+    .drop-zone.blue:hover, .drop-zone.blue.drag-over { border-color: var(--blue); background: var(--blue-lt); }
+    .drop-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .drop-icon { font-size: 28px; margin-bottom: 8px; }
+    .drop-label { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+    .drop-sub { font-size: 11px; color: var(--muted); }
+    .preview-wrap { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); background: var(--bg); display: none; flex-direction: column; }
+    .preview-wrap.visible { display: flex; }
+    .img-preview { width: 100%; max-height: 220px; object-fit: contain; background: #f0ede8; }
+    .preview-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: var(--surface2); border-top: 1px solid var(--border); }
+    .preview-name { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 220px; }
+    .clear-btn { background: none; border: none; color: var(--hint); font-size: 20px; cursor: pointer; line-height: 1; padding: 0 4px; transition: color 0.15s; }
+    .clear-btn:hover { color: var(--danger); }
+    .prompt-row { display: flex; gap: 8px; }
+    .prompt-row input { flex: 1; border: 1px solid var(--border2); border-radius: var(--radius); padding: 10px 14px; font-size: 13px; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text); background: var(--bg); transition: border-color 0.15s; }
+    .prompt-row input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,106,79,0.1); }
+    .result-box { background: var(--accent-lt); border: 1px solid rgba(45,106,79,0.2); border-radius: var(--radius); padding: 14px 16px; display: none; }
+    .result-box.visible { display: block; }
+    .result-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .result-label { font-size: 11px; font-weight: 600; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase; }
+    .append-btn { font-size: 12px; font-weight: 600; color: #fff; background: var(--accent); border: none; border-radius: 7px; padding: 5px 14px; cursor: pointer; transition: opacity 0.15s; }
+    .append-btn:hover { opacity: 0.85; }
+    .result-text { font-size: 13px; color: var(--text); line-height: 1.75; white-space: pre-wrap; }
+
+    /* EXCEL */
+    .sheet-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+    .sheet-tab { padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border2); background: var(--bg); font-size: 12px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+    .sheet-tab.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .excel-preview { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: auto; max-height: 240px; }
+    .excel-preview table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .excel-preview th { background: var(--surface2); padding: 7px 12px; text-align: left; font-weight: 600; color: var(--text); border-bottom: 1px solid var(--border2); white-space: nowrap; position: sticky; top: 0; }
+    .excel-preview td { padding: 6px 12px; border-bottom: 1px solid var(--border); color: var(--muted); white-space: nowrap; }
+    .excel-preview tr:last-child td { border-bottom: none; }
+    .file-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: var(--surface2); border-radius: var(--radius); border: 1px solid var(--border); }
+    .file-name { font-size: 12px; color: var(--muted); font-weight: 500; }
+    .result-actions { display: flex; align-items: center; justify-content: space-between; }
+    .row-count { font-size: 11px; color: var(--hint); }
+
+    /* USER CHAT */
     #user-screen { display: none; height: 100vh; flex-direction: column; background: var(--bg); }
-
-    .chat-topbar {
-      background: var(--surface); border-bottom: 1px solid var(--border);
-      padding: 0 20px; height: 56px; display: flex; align-items: center;
-      justify-content: space-between; flex-shrink: 0;
-    }
+    .chat-topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 20px; height: 56px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
     .chat-topbar-left { display: flex; align-items: center; gap: 12px; }
     .bot-icon { width: 34px; height: 34px; border-radius: 50%; background: var(--accent-lt); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .bot-icon svg { width: 18px; height: 18px; }
-    .chat-bot-name { font-size: 15px; font-weight: 600; color: var(--text); }
-    .chat-bot-sub  { font-size: 12px; color: var(--muted); }
-
-    .chat-messages-area { flex: 1; overflow-y: auto; padding: 28px 0; display: flex; flex-direction: column; }
-    .chat-messages-inner { width: 100%; max-width: 680px; margin: 0 auto; padding: 0 20px; display: flex; flex-direction: column; gap: 20px; }
-
-    .welcome-msg { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 40px 20px 20px; gap: 12px; color: var(--muted); }
+    .chat-bot-name { font-size: 15px; font-weight: 600; }
+    .chat-bot-sub { font-size: 12px; color: var(--muted); }
+    .chat-area { flex: 1; overflow-y: auto; padding: 28px 0; display: flex; flex-direction: column; }
+    .chat-inner { width: 100%; max-width: 680px; margin: 0 auto; padding: 0 20px; display: flex; flex-direction: column; gap: 20px; }
+    .welcome-msg { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 40px 20px 20px; gap: 12px; }
     .welcome-icon { width: 52px; height: 52px; background: var(--accent-lt); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 4px; }
     .welcome-icon svg { width: 26px; height: 26px; }
     .welcome-msg h2 { font-family: 'Lora', serif; font-size: 20px; font-weight: 400; color: var(--text); }
-    .welcome-msg p  { font-size: 14px; max-width: 320px; line-height: 1.6; }
-
+    .welcome-msg p { font-size: 14px; color: var(--muted); max-width: 320px; line-height: 1.6; }
     .msg-row { display: flex; gap: 10px; align-items: flex-end; }
     .msg-row.user { flex-direction: row-reverse; }
-    .msg-avatar { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
-    .msg-avatar.bot { background: var(--accent-lt); color: var(--accent); }
-    .msg-avatar.usr { background: var(--accent); color: #fff; }
+    .msg-av { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+    .msg-av.bot { background: var(--accent-lt); color: var(--accent); }
+    .msg-av.usr { background: var(--accent); color: #fff; }
     .msg-bubble { max-width: 72%; padding: 12px 16px; border-radius: 18px; font-size: 14px; line-height: 1.65; }
     .msg-row.bot .msg-bubble { background: var(--surface); color: var(--text); border-bottom-left-radius: 4px; border: 1px solid var(--border); box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
     .msg-row.user .msg-bubble { background: var(--user-bubble); color: #fff; border-bottom-right-radius: 4px; }
-
     .typing-row { display: flex; gap: 10px; align-items: flex-end; }
     .typing-bubble { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; border-bottom-left-radius: 4px; padding: 14px 18px; display: flex; gap: 5px; align-items: center; }
     .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--hint); animation: pulse 1.3s infinite; }
     .dot:nth-child(2) { animation-delay: 0.18s; }
     .dot:nth-child(3) { animation-delay: 0.36s; }
     @keyframes pulse { 0%,60%,100%{opacity:0.3;transform:scale(1)} 30%{opacity:1;transform:scale(1.15)} }
-
     .chat-input-area { background: var(--surface); border-top: 1px solid var(--border); padding: 14px 20px; flex-shrink: 0; }
-    .chat-input-inner {
-      max-width: 680px; margin: 0 auto; display: flex; align-items: center; gap: 10px;
-      background: var(--bg); border: 1px solid var(--border2); border-radius: 24px;
-      padding: 8px 8px 8px 18px; transition: border-color 0.15s, box-shadow 0.15s;
-    }
+    .chat-input-inner { max-width: 680px; margin: 0 auto; display: flex; align-items: center; gap: 10px; background: var(--bg); border: 1px solid var(--border2); border-radius: 24px; padding: 8px 8px 8px 18px; transition: border-color 0.15s, box-shadow 0.15s; }
     .chat-input-inner:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,106,79,0.1); }
     .chat-input-inner input { flex: 1; border: none; background: transparent; font-size: 14px; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text); }
     .chat-input-inner input:focus { outline: none; }
     .chat-input-inner input::placeholder { color: var(--hint); }
-
-    .send-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: opacity 0.15s, transform 0.1s; }
+    .send-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: opacity 0.15s; }
     .send-btn:hover { opacity: 0.88; }
-    .send-btn:active { transform: scale(0.94); }
     .send-btn:disabled { opacity: 0.35; cursor: default; }
     .send-btn svg { width: 16px; height: 16px; }
-
     .chat-footer-note { text-align: center; font-size: 11px; color: var(--hint); margin-top: 8px; max-width: 680px; margin-left: auto; margin-right: auto; }
-
     .no-notes-notice { max-width: 680px; margin: 40px auto; background: #fff8e6; border: 1px solid #f0d080; border-radius: var(--radius); padding: 16px 20px; font-size: 13px; color: #7a5c00; text-align: center; }
+    .chat-area::-webkit-scrollbar { width: 4px; }
+    .chat-area::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
 
-    .chat-messages-area::-webkit-scrollbar { width: 4px; }
-    .chat-messages-area::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
-
-    .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
+    /* SPINNER */
+    .spinner { display: inline-block; width: 13px; height: 13px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
     @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* ── IMAGE ANALYZER ── */
-    .img-analyzer { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 14px; }
-    .img-analyzer-title { font-size: 13px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
-    .img-analyzer-title .pill { font-size: 10px; font-weight: 600; background: var(--accent-lt); color: var(--accent); padding: 2px 8px; border-radius: 20px; }
-    .img-drop-zone { border: 2px dashed var(--border2); border-radius: var(--radius); padding: 28px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--bg); position: relative; }
-    .img-drop-zone:hover, .img-drop-zone.drag-over { border-color: var(--accent); background: var(--accent-lt); }
-    .img-drop-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-    .img-drop-icon { font-size: 28px; margin-bottom: 8px; }
-    .img-drop-label { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
-    .img-drop-sub { font-size: 11px; color: var(--muted); }
-    .img-preview-wrap { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); background: var(--bg); display: none; flex-direction: column; }
-    .img-preview-wrap.has-image { display: flex; }
-    .img-preview { width: 100%; max-height: 220px; object-fit: contain; background: #f0ede8; }
-    .img-preview-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: var(--surface2); border-top: 1px solid var(--border); }
-    .img-preview-name { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 200px; }
-    .img-clear-btn { background: none; border: none; color: var(--hint); font-size: 18px; cursor: pointer; line-height: 1; padding: 0 4px; transition: color 0.15s; }
-    .img-clear-btn:hover { color: var(--danger); }
-    .img-prompt-row { display: flex; gap: 8px; }
-    .img-prompt-row input { flex: 1; border: 1px solid var(--border2); border-radius: var(--radius); padding: 10px 14px; font-size: 13px; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text); background: var(--bg); transition: border-color 0.15s; }
-    .img-prompt-row input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,106,79,0.1); }
-    .img-result { background: var(--accent-lt); border: 1px solid rgba(45,106,79,0.2); border-radius: var(--radius); padding: 14px 16px; display: none; }
-    .img-result.visible { display: block; }
-    .img-result-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-    .img-result-label { font-size: 11px; font-weight: 600; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase; }
-    .img-append-btn { font-size: 12px; font-weight: 600; color: #fff; background: var(--accent); border: none; border-radius: 7px; padding: 5px 14px; cursor: pointer; transition: opacity 0.15s; }
-    .img-append-btn:hover { opacity: 0.85; }
-    .img-result-text { font-size: 13px; color: var(--text); line-height: 1.75; white-space: pre-wrap; }
-
-    /* ── EXCEL READER ── */
-    .excel-reader { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 14px; }
-    .excel-reader-title { font-size: 13px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 8px; }
-    .excel-reader-title .pill-green { font-size: 10px; font-weight: 600; background: #e0f0ff; color: #1a6fb5; padding: 2px 8px; border-radius: 20px; }
-    .excel-drop-zone { border: 2px dashed var(--border2); border-radius: var(--radius); padding: 28px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--bg); position: relative; }
-    .excel-drop-zone:hover, .excel-drop-zone.drag-over { border-color: #1a6fb5; background: #e8f4ff; }
-    .excel-drop-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-    .excel-sheet-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
-    .sheet-tab { padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border2); background: var(--bg); font-size: 12px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500; color: var(--muted); cursor: pointer; transition: all 0.15s; }
-    .sheet-tab.active { background: #1a6fb5; color: #fff; border-color: #1a6fb5; }
-    .excel-preview { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: auto; max-height: 240px; }
-    .excel-preview table { width: 100%; border-collapse: collapse; font-size: 12px; }
-    .excel-preview th { background: var(--surface2); padding: 7px 12px; text-align: left; font-weight: 600; color: var(--text); border-bottom: 1px solid var(--border2); white-space: nowrap; position: sticky; top: 0; }
-    .excel-preview td { padding: 6px 12px; border-bottom: 1px solid var(--border); color: var(--muted); white-space: nowrap; }
-    .excel-preview tr:last-child td { border-bottom: none; }
-    .excel-file-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: var(--surface2); border-radius: var(--radius); border: 1px solid var(--border); }
-    .excel-file-name { font-size: 12px; color: var(--muted); font-weight: 500; }
-    .excel-result-actions { display: flex; align-items: center; justify-content: space-between; }
-    .excel-row-count { font-size: 11px; color: var(--hint); }
   </style>
 </head>
 <body>
 
-<!-- ═══ LOGIN ═══ -->
+<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-wrap">
     <div class="login-logo">
-      <div class="wordmark">Notes Q&A</div>
+      <div class="wordmark">Notes Q&amp;A</div>
       <div class="tagline">AI answers from your team's notes</div>
     </div>
     <div class="login-card">
@@ -318,8 +219,7 @@
       </div>
       <div class="field">
         <label>Password</label>
-        <input type="password" id="login-pass" placeholder="••••••" autocomplete="current-password"
-          onkeydown="if(event.key==='Enter')doLogin()" />
+        <input type="password" id="login-pass" placeholder="••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()" />
       </div>
       <div class="login-err" id="login-err"></div>
       <button class="login-submit" id="login-btn" onclick="doLogin()">Sign in</button>
@@ -327,13 +227,13 @@
   </div>
 </div>
 
-<!-- ═══ ADMIN ═══ -->
+<!-- ADMIN -->
 <div id="admin-screen">
-  <div class="admin-topbar">
-    <div class="topbar-brand">Notes Q&A</div>
+  <div class="topbar">
+    <div class="topbar-brand">Notes Q&amp;A</div>
     <div class="topbar-right">
       <span class="badge badge-admin">Admin</span>
-      <span class="topbar-user" id="admin-username-label"></span>
+      <span class="topbar-user" id="admin-name"></span>
       <button class="signout-btn" onclick="doLogout()">Sign out</button>
     </div>
   </div>
@@ -345,84 +245,69 @@
     </div>
     <div class="admin-content">
 
+      <!-- NOTES PANEL -->
       <div class="panel active" id="apanel-notes">
         <div class="api-row">
           <label>Gemini API key</label>
           <input type="password" id="api-key-input" placeholder="AIza..." onkeydown="if(event.key==='Enter')saveApiKey()" />
-          <button class="btn-primary" id="save-key-btn" onclick="saveApiKey()" style="white-space:nowrap;padding:7px 16px;font-size:12px;">Save key</button>
-          <span id="key-save-ok" style="font-size:12px;color:var(--success);visibility:hidden;white-space:nowrap;">Saved ✓</span>
+          <button class="btn-primary" id="save-key-btn" onclick="saveApiKey()" style="padding:7px 16px;font-size:12px;">Save key</button>
+          <span class="save-ok" id="key-save-ok">Saved ✓</span>
         </div>
 
-        <!-- IMAGE ANALYZER -->
         <div class="section-label">Analyze image → add to notes</div>
-        <div class="img-analyzer">
-          <div class="img-analyzer-title">
-            🖼️ Image Analyzer
-            <span class="pill">AI-powered</span>
-          </div>
-
-          <div class="img-drop-zone" id="img-drop-zone"
+        <div class="feature-box">
+          <div class="feature-title">🖼️ Image Analyzer <span class="pill pill-green">AI-powered</span></div>
+          <div class="drop-zone" id="img-drop-zone"
             ondragover="event.preventDefault();this.classList.add('drag-over')"
             ondragleave="this.classList.remove('drag-over')"
             ondrop="handleImgDrop(event)">
             <input type="file" accept="image/*" onchange="handleImgFile(this.files[0])" />
-            <div class="img-drop-icon">📎</div>
-            <div class="img-drop-label">Drop an image here or click to upload</div>
-            <div class="img-drop-sub">Supports PNG, JPG, JPEG, WEBP · You can also paste with Ctrl+V</div>
+            <div class="drop-icon">📎</div>
+            <div class="drop-label">Drop image here or click to upload</div>
+            <div class="drop-sub">PNG, JPG, WEBP · Or paste with Ctrl+V</div>
           </div>
-
-          <div class="img-preview-wrap" id="img-preview-wrap">
+          <div class="preview-wrap" id="img-preview-wrap">
             <img class="img-preview" id="img-preview" src="" alt="Preview" />
-            <div class="img-preview-bar">
-              <span class="img-preview-name" id="img-preview-name">image.png</span>
-              <button class="img-clear-btn" onclick="clearImage()" title="Remove image">×</button>
+            <div class="preview-bar">
+              <span class="preview-name" id="img-preview-name">image.png</span>
+              <button class="clear-btn" onclick="clearImg()">×</button>
             </div>
           </div>
-
-          <div class="img-prompt-row">
-            <input type="text" id="img-prompt" placeholder='Optional: "Extract all table data" or "List all items and quantities"' />
-            <button class="btn-primary" id="img-analyze-btn" onclick="analyzeImage()" style="white-space:nowrap;">
-              Analyze
-            </button>
+          <div class="prompt-row">
+            <input type="text" id="img-prompt" placeholder='e.g. "Extract all table data" or leave blank for full analysis' />
+            <button class="btn-primary" id="img-analyze-btn" onclick="analyzeImage()">Analyze</button>
           </div>
-
-          <div class="img-result" id="img-result">
-            <div class="img-result-header">
-              <span class="img-result-label">✦ AI Analysis</span>
-              <button class="img-append-btn" onclick="appendToNotes()">+ Add to notes</button>
+          <div class="result-box" id="img-result">
+            <div class="result-header">
+              <span class="result-label">✦ AI Analysis</span>
+              <button class="append-btn" onclick="appendImgToNotes()">+ Add to notes</button>
             </div>
-            <div class="img-result-text" id="img-result-text"></div>
+            <div class="result-text" id="img-result-text"></div>
           </div>
         </div>
 
-        <!-- EXCEL READER -->
         <div class="section-label">Read Excel / CSV → add to notes</div>
-        <div class="excel-reader">
-          <div class="excel-reader-title">
-            📊 Excel &amp; CSV Reader
-            <span class="pill-green">No AI needed</span>
-          </div>
-
-          <div class="excel-drop-zone" id="excel-drop-zone"
+        <div class="feature-box">
+          <div class="feature-title">📊 Excel &amp; CSV Reader <span class="pill pill-blue">No AI needed</span></div>
+          <div class="drop-zone blue" id="xl-drop-zone"
             ondragover="event.preventDefault();this.classList.add('drag-over')"
             ondragleave="this.classList.remove('drag-over')"
-            ondrop="handleExcelDrop(event)">
-            <input type="file" accept=".xlsx,.xls,.csv" onchange="handleExcelFile(this.files[0])" id="excel-file-input" />
-            <div class="img-drop-icon">📂</div>
-            <div class="img-drop-label">Drop an Excel or CSV file here or click to upload</div>
-            <div class="img-drop-sub">Supports .xlsx, .xls, .csv</div>
+            ondrop="handleXlDrop(event)">
+            <input type="file" accept=".xlsx,.xls,.csv" id="xl-file-input" onchange="handleXlFile(this.files[0])" />
+            <div class="drop-icon">📂</div>
+            <div class="drop-label">Drop Excel or CSV file here or click to upload</div>
+            <div class="drop-sub">Supports .xlsx, .xls, .csv</div>
           </div>
-
-          <div id="excel-loaded" style="display:none;flex-direction:column;gap:12px;">
-            <div class="excel-file-bar">
-              <span class="excel-file-name" id="excel-file-name">file.xlsx</span>
-              <button class="img-clear-btn" onclick="clearExcel()" title="Remove file">×</button>
+          <div id="xl-loaded" style="display:none;flex-direction:column;gap:12px;">
+            <div class="file-bar">
+              <span class="file-name" id="xl-file-name">file.xlsx</span>
+              <button class="clear-btn" onclick="clearXl()">×</button>
             </div>
-            <div class="excel-sheet-tabs" id="excel-sheet-tabs"></div>
-            <div class="excel-preview" id="excel-preview"></div>
-            <div class="excel-result-actions">
-              <span class="excel-row-count" id="excel-row-count"></span>
-              <button class="img-append-btn" style="background:#1a6fb5;" onclick="appendExcelToNotes()">+ Add to notes</button>
+            <div class="sheet-tabs" id="xl-sheet-tabs"></div>
+            <div class="excel-preview" id="xl-preview"></div>
+            <div class="result-actions">
+              <span class="row-count" id="xl-row-count"></span>
+              <button class="append-btn" style="background:var(--blue);" onclick="appendXlToNotes()">+ Add to notes</button>
             </div>
           </div>
         </div>
@@ -431,12 +316,13 @@
         <div class="card">
           <textarea id="notes-input" placeholder="Paste your notes here — meeting minutes, SOPs, project docs…"></textarea>
           <div class="card-footer">
-            <span class="save-ok" id="save-ok">Saved ✓</span>
-            <button class="btn-primary" id="save-btn" onclick="saveNotes()">Save notes</button>
+            <span class="save-ok" id="notes-save-ok">Saved ✓</span>
+            <button class="btn-primary" id="save-notes-btn" onclick="saveNotes()">Save notes</button>
           </div>
         </div>
       </div>
 
+      <!-- USERS PANEL -->
       <div class="panel" id="apanel-users">
         <div class="section-label">Accounts</div>
         <div class="users-list" id="users-list"></div>
@@ -453,6 +339,7 @@
         </div>
       </div>
 
+      <!-- HISTORY PANEL -->
       <div class="panel" id="apanel-history">
         <div class="section-header">
           <div class="section-label">All questions</div>
@@ -465,7 +352,7 @@
   </div>
 </div>
 
-<!-- ═══ USER CHAT ═══ -->
+<!-- USER CHAT -->
 <div id="user-screen">
   <div class="chat-topbar">
     <div class="chat-topbar-left">
@@ -481,12 +368,12 @@
     </div>
     <div class="topbar-right">
       <span class="badge badge-user">User</span>
-      <span class="topbar-user" id="user-username-label"></span>
+      <span class="topbar-user" id="user-name"></span>
       <button class="signout-btn" onclick="doLogout()">Sign out</button>
     </div>
   </div>
-  <div class="chat-messages-area" id="chat-area">
-    <div class="chat-messages-inner" id="chat-inner"></div>
+  <div class="chat-area" id="chat-area">
+    <div class="chat-inner" id="chat-inner"></div>
   </div>
   <div class="chat-input-area">
     <div class="chat-input-inner">
@@ -503,32 +390,19 @@
 </div>
 
 <script>
-  /* ── Supabase config ── */
-  const SUPABASE_URL = 'https://tieyjjsarjcidlxnjuhp.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpZXlqanNhcmpjaWRseG5qdWhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxMzg5MjcsImV4cCI6MjA5MjcxNDkyN30.ImsDU_gGd-OKM5Kljs_4sbvp_zyxIDQgxset2mAVV-I';
+  /* ── Supabase ── */
+  const SB_URL = 'https://tieyjjsarjcidlxnjuhp.supabase.co';
+  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpZXlqanNhcmpjaWRseG5qdWhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxMzg5MjcsImV4cCI6MjA5MjcxNDkyN30.ImsDU_gGd-OKM5Kljs_4sbvp_zyxIDQgxset2mAVV-I';
+  const SB_HEADERS = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
 
-  const sb = {
-    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
-    async get(table, query='') {
-      const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}${query}`, { headers: this.headers });
-      return r.json();
-    },
-    async post(table, body) {
-      const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, { method:'POST', headers: this.headers, body: JSON.stringify(body) });
-      return r.json();
-    },
-    async patch(table, query, body) {
-      const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}${query}`, { method:'PATCH', headers: {...this.headers, 'Prefer':'return=representation'}, body: JSON.stringify(body) });
-      return r.json();
-    },
-    async delete(table, query) {
-      await fetch(`${SUPABASE_URL}/rest/v1/${table}${query}`, { method:'DELETE', headers: this.headers });
-    }
-  };
+  async function sbGet(table, q) { const r = await fetch(SB_URL+'/rest/v1/'+table+(q||''), {headers:SB_HEADERS}); return r.json(); }
+  async function sbPost(table, body) { const r = await fetch(SB_URL+'/rest/v1/'+table, {method:'POST',headers:SB_HEADERS,body:JSON.stringify(body)}); return r.json(); }
+  async function sbPatch(table, q, body) { const r = await fetch(SB_URL+'/rest/v1/'+table+(q||''), {method:'PATCH',headers:{...SB_HEADERS,'Prefer':'return=representation'},body:JSON.stringify(body)}); return r.json(); }
+  async function sbDelete(table, q) { await fetch(SB_URL+'/rest/v1/'+table+(q||''), {method:'DELETE',headers:SB_HEADERS}); }
 
   /* ── State ── */
   let selectedRole = 'admin';
-  let currentUser  = null;
+  let currentUser = null;
 
   /* ── Login ── */
   function setRole(r) {
@@ -544,43 +418,41 @@
     const p = document.getElementById('login-pass').value;
     const err = document.getElementById('login-err');
     const btn = document.getElementById('login-btn');
-
     if (!u || !p) { err.textContent = 'Please fill in all fields.'; return; }
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span>Signing in…';
-
+    err.textContent = '';
     try {
       if (selectedRole === 'admin') {
-        // Check admin credentials from notes table config
-        const rows = await sb.get('notes', '?id=eq.1&select=admin_pass');
-        const adminPass = (rows[0] && rows[0].admin_pass) ? rows[0].admin_pass : 'admin123';
+        const rows = await sbGet('notes', '?id=eq.1&select=admin_pass');
+        const adminPass = (rows && rows[0] && rows[0].admin_pass) ? rows[0].admin_pass : 'admin123';
         if (u === 'admin' && p === adminPass) {
           currentUser = { username: 'admin', role: 'admin' };
-          await showAdmin();
+          showAdmin();
         } else {
           err.textContent = 'Incorrect admin credentials.';
         }
       } else {
-        const rows = await sb.get('users', `?username=eq.${encodeURIComponent(u)}&password=eq.${encodeURIComponent(p)}`);
+        const rows = await sbGet('users', '?username=eq.' + encodeURIComponent(u) + '&password=eq.' + encodeURIComponent(p));
         if (rows && rows.length > 0) {
-          currentUser = { username: rows[0].username, role: 'user', id: rows[0].id };
+          currentUser = { username: rows[0].username, role: 'user' };
           showUser();
         } else {
           err.textContent = 'User not found or wrong password.';
         }
       }
     } catch(e) {
-      err.textContent = 'Connection error. Check your setup.';
+      err.textContent = 'Connection error. Please try again.';
       console.error(e);
     }
-
     btn.disabled = false;
     btn.textContent = 'Sign in';
   }
 
   function doLogout() {
     currentUser = null;
-    ['admin-screen','user-screen'].forEach(id => document.getElementById(id).style.display = 'none');
+    document.getElementById('admin-screen').style.display = 'none';
+    document.getElementById('user-screen').style.display = 'none';
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('login-user').value = '';
     document.getElementById('login-pass').value = '';
@@ -593,10 +465,8 @@
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('user-screen').style.display = 'none';
     document.getElementById('admin-screen').style.display = 'flex';
-    document.getElementById('admin-username-label').textContent = 'admin';
-
-    // Load notes & api key
-    const rows = await sb.get('notes', '?id=eq.1');
+    document.getElementById('admin-name').textContent = 'admin';
+    const rows = await sbGet('notes', '?id=eq.1');
     if (rows && rows[0]) {
       document.getElementById('notes-input').value = rows[0].content || '';
       document.getElementById('api-key-input').value = rows[0].api_key || '';
@@ -616,9 +486,9 @@
   async function saveApiKey() {
     const btn = document.getElementById('save-key-btn');
     const api_key = document.getElementById('api-key-input').value.trim();
-    if (!api_key) { alert('Please enter your Gemini API key first.'); return; }
+    if (!api_key) { alert('Please enter your Gemini API key.'); return; }
     btn.disabled = true; btn.textContent = 'Saving…';
-    await sb.patch('notes', '?id=eq.1', { api_key, updated_at: new Date().toISOString() });
+    await sbPatch('notes', '?id=eq.1', { api_key, updated_at: new Date().toISOString() });
     btn.disabled = false; btn.textContent = 'Save key';
     const ok = document.getElementById('key-save-ok');
     ok.style.visibility = 'visible';
@@ -626,15 +496,13 @@
   }
 
   async function saveNotes() {
-    const btn = document.getElementById('save-btn');
-    btn.disabled = true;
-    btn.textContent = 'Saving…';
+    const btn = document.getElementById('save-notes-btn');
+    btn.disabled = true; btn.textContent = 'Saving…';
     const content = document.getElementById('notes-input').value.trim();
     const api_key = document.getElementById('api-key-input').value.trim();
-    await sb.patch('notes', '?id=eq.1', { content, api_key, updated_at: new Date().toISOString() });
-    btn.disabled = false;
-    btn.textContent = 'Save notes';
-    const ok = document.getElementById('save-ok');
+    await sbPatch('notes', '?id=eq.1', { content, api_key, updated_at: new Date().toISOString() });
+    btn.disabled = false; btn.textContent = 'Save notes';
+    const ok = document.getElementById('notes-save-ok');
     ok.style.visibility = 'visible';
     setTimeout(() => ok.style.visibility = 'hidden', 2000);
   }
@@ -642,16 +510,13 @@
   async function renderUsers() {
     const list = document.getElementById('users-list');
     list.innerHTML = '<p class="empty-state" style="padding:12px 0;">Loading…</p>';
-    const users = await sb.get('users', '?order=created_at.asc');
+    const users = await sbGet('users', '?order=created_at.asc');
     if (!users || !users.length) { list.innerHTML = '<p class="empty-state" style="padding:12px 0;">No users yet.</p>'; return; }
     list.innerHTML = users.map(u => `
       <div class="user-row">
         <div class="user-row-left">
           <div class="avatar">${u.username[0].toUpperCase()}</div>
-          <div>
-            <div class="user-name">${esc(u.username)}</div>
-            <div class="user-sub">User account</div>
-          </div>
+          <div><div class="user-name">${esc(u.username)}</div><div class="user-sub">User account</div></div>
         </div>
         <button class="btn-remove" onclick="removeUser('${esc(u.id)}')">Remove</button>
       </div>`).join('');
@@ -660,12 +525,12 @@
   async function addUser() {
     const name = document.getElementById('nu-name').value.trim();
     const pass = document.getElementById('nu-pass').value;
-    const err  = document.getElementById('nu-err');
-    const btn  = document.getElementById('add-user-btn');
+    const err = document.getElementById('nu-err');
+    const btn = document.getElementById('add-user-btn');
     if (!name || !pass) { err.textContent = 'Both fields required.'; return; }
     if (name === 'admin') { err.textContent = 'Reserved username.'; return; }
     btn.disabled = true; btn.textContent = 'Adding…';
-    const result = await sb.post('users', { username: name, password: pass });
+    const result = await sbPost('users', { username: name, password: pass });
     if (result && result[0] && result[0].id) {
       document.getElementById('nu-name').value = '';
       document.getElementById('nu-pass').value = '';
@@ -678,14 +543,14 @@
   }
 
   async function removeUser(id) {
-    await sb.delete('users', `?id=eq.${id}`);
+    await sbDelete('users', '?id=eq.' + id);
     renderUsers();
   }
 
   async function renderAdminHistory() {
     const el = document.getElementById('admin-history');
     el.innerHTML = '<p class="empty-state">Loading…</p>';
-    const rows = await sb.get('history', '?order=created_at.desc&limit=100');
+    const rows = await sbGet('history', '?order=created_at.desc&limit=100');
     if (!rows || !rows.length) { el.innerHTML = '<p class="empty-state">No questions yet.</p>'; return; }
     el.innerHTML = rows.map(h => `
       <div class="h-item">
@@ -696,8 +561,188 @@
   }
 
   async function clearAllHistory() {
-    await sb.delete('history', '?id=neq.00000000-0000-0000-0000-000000000000');
+    await sbDelete('history', '?id=neq.00000000-0000-0000-0000-000000000000');
     renderAdminHistory();
+  }
+
+  /* ── Image Analyzer ── */
+  let imgBase64 = null;
+  let imgMime = 'image/png';
+
+  function handleImgDrop(e) {
+    e.preventDefault();
+    document.getElementById('img-drop-zone').classList.remove('drag-over');
+    handleImgFile(e.dataTransfer.files[0]);
+  }
+
+  function handleImgFile(file) {
+    if (!file || !file.type.startsWith('image/')) return;
+    imgMime = file.type;
+    const reader = new FileReader();
+    reader.onload = e => {
+      imgBase64 = e.target.result.split(',')[1];
+      document.getElementById('img-preview').src = e.target.result;
+      document.getElementById('img-preview-name').textContent = file.name;
+      document.getElementById('img-preview-wrap').classList.add('visible');
+      document.getElementById('img-drop-zone').style.display = 'none';
+      document.getElementById('img-result').classList.remove('visible');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function clearImg() {
+    imgBase64 = null;
+    document.getElementById('img-preview').src = '';
+    document.getElementById('img-preview-wrap').classList.remove('visible');
+    document.getElementById('img-drop-zone').style.display = '';
+    document.getElementById('img-result').classList.remove('visible');
+  }
+
+  document.addEventListener('paste', e => {
+    if (!document.getElementById('apanel-notes').classList.contains('active')) return;
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    for (const item of items) {
+      if (item.type.startsWith('image/')) { handleImgFile(item.getAsFile()); break; }
+    }
+  });
+
+  async function analyzeImage() {
+    if (!imgBase64) { alert('Please upload or paste an image first.'); return; }
+    let apiKey = document.getElementById('api-key-input').value.trim();
+    if (!apiKey) {
+      const rows = await sbGet('notes', '?id=eq.1&select=api_key');
+      apiKey = rows?.[0]?.api_key || '';
+    }
+    if (!apiKey) {
+      showImgResult('❌ No Gemini API key found. Please enter your AIza... key and click Save key.');
+      return;
+    }
+    const btn = document.getElementById('img-analyze-btn');
+    btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Analyzing…';
+    const prompt = document.getElementById('img-prompt').value.trim() ||
+      'Extract and summarize all important information from this image in a clear, structured format. Include any data, text, tables, or key details.';
+    try {
+      const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: [{ role: 'user', parts: [{ inline_data: { mime_type: imgMime, data: imgBase64 } }, { text: prompt }] }] })
+      });
+      const data = await res.json();
+      if (data.error) { showImgResult('❌ Error: ' + (data.error.message || 'API error. Check your Gemini key.')); }
+      else if (data.candidates?.[0]?.finishReason === 'SAFETY') { showImgResult('⚠️ Image blocked by safety filters. Try a different image.'); }
+      else { showImgResult(data.candidates?.[0]?.content?.parts?.[0]?.text || 'Could not analyze image.'); }
+    } catch(e) {
+      showImgResult('❌ Request failed: ' + e.message);
+      console.error(e);
+    }
+    btn.disabled = false; btn.textContent = 'Analyze';
+  }
+
+  function showImgResult(text) {
+    document.getElementById('img-result-text').textContent = text;
+    document.getElementById('img-result').classList.add('visible');
+  }
+
+  function appendImgToNotes() {
+    const result = document.getElementById('img-result-text').textContent;
+    if (!result) return;
+    const ta = document.getElementById('notes-input');
+    const existing = ta.value.trim();
+    const ts = new Date().toLocaleString();
+    ta.value = existing ? existing + '\n\n---\n[Image analysis — ' + ts + ']\n' + result : '[Image analysis — ' + ts + ']\n' + result;
+    ta.scrollTop = ta.scrollHeight;
+    flashTextarea(ta, 'var(--accent)', 'rgba(45,106,79,0.15)');
+  }
+
+  /* ── Excel Reader ── */
+  let xlWorkbook = null;
+  let xlActiveSheet = null;
+  let xlSheets = {};
+
+  function handleXlDrop(e) {
+    e.preventDefault();
+    document.getElementById('xl-drop-zone').classList.remove('drag-over');
+    handleXlFile(e.dataTransfer.files[0]);
+  }
+
+  function handleXlFile(file) {
+    if (!file) return;
+    const name = file.name.toLowerCase();
+    if (!name.endsWith('.xlsx') && !name.endsWith('.xls') && !name.endsWith('.csv')) {
+      alert('Please upload an .xlsx, .xls, or .csv file.'); return;
+    }
+    document.getElementById('xl-file-name').textContent = file.name;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        xlWorkbook = XLSX.read(new Uint8Array(e.target.result), { type: 'array', cellDates: true });
+        xlSheets = {};
+        xlWorkbook.SheetNames.forEach(n => {
+          xlSheets[n] = XLSX.utils.sheet_to_json(xlWorkbook.Sheets[n], { defval: '' });
+        });
+        document.getElementById('xl-sheet-tabs').innerHTML = xlWorkbook.SheetNames.map((n, i) =>
+          '<button class="sheet-tab ' + (i===0?'active':'') + '" onclick="selectSheet(this,\'' + n.replace(/'/g,"\\'") + '\')">' + esc(n) + '</button>'
+        ).join('');
+        xlActiveSheet = xlWorkbook.SheetNames[0];
+        renderXlPreview(xlActiveSheet);
+        document.getElementById('xl-drop-zone').style.display = 'none';
+        const loaded = document.getElementById('xl-loaded');
+        loaded.style.display = 'flex'; loaded.style.flexDirection = 'column';
+      } catch(err) { alert('Could not read file: ' + err.message); }
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  function selectSheet(btn, name) {
+    xlActiveSheet = name;
+    document.querySelectorAll('.sheet-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    renderXlPreview(name);
+  }
+
+  function renderXlPreview(name) {
+    const rows = xlSheets[name];
+    const preview = document.getElementById('xl-preview');
+    const countEl = document.getElementById('xl-row-count');
+    if (!rows || !rows.length) {
+      preview.innerHTML = '<p style="padding:16px;font-size:13px;color:var(--hint);">Sheet is empty.</p>';
+      countEl.textContent = '0 rows'; return;
+    }
+    const headers = Object.keys(rows[0]);
+    const previewRows = rows.slice(0, 50);
+    preview.innerHTML = '<table><thead><tr>' + headers.map(h => '<th>' + esc(String(h)) + '</th>').join('') + '</tr></thead><tbody>' +
+      previewRows.map(row => '<tr>' + headers.map(h => '<td>' + esc(String(row[h] ?? '')) + '</td>').join('') + '</tr>').join('') + '</tbody></table>';
+    countEl.textContent = rows.length + ' rows · ' + headers.length + ' columns' + (rows.length > 50 ? ' (previewing first 50)' : '');
+  }
+
+  function clearXl() {
+    xlWorkbook = null; xlActiveSheet = null; xlSheets = {};
+    document.getElementById('xl-loaded').style.display = 'none';
+    document.getElementById('xl-drop-zone').style.display = '';
+    document.getElementById('xl-file-input').value = '';
+  }
+
+  function appendXlToNotes() {
+    if (!xlActiveSheet || !xlSheets[xlActiveSheet]) return;
+    const rows = xlSheets[xlActiveSheet];
+    if (!rows.length) { alert('Sheet is empty.'); return; }
+    const headers = Object.keys(rows[0]);
+    const ts = new Date().toLocaleString();
+    let text = '[Excel data — Sheet: "' + xlActiveSheet + '" — ' + ts + ']\n';
+    text += headers.join(' | ') + '\n' + headers.map(() => '---').join(' | ') + '\n';
+    rows.forEach(row => { text += headers.map(h => String(row[h] ?? '')).join(' | ') + '\n'; });
+    const ta = document.getElementById('notes-input');
+    const existing = ta.value.trim();
+    ta.value = existing ? existing + '\n\n---\n' + text : text;
+    ta.scrollTop = ta.scrollHeight;
+    flashTextarea(ta, '#1a6fb5', 'rgba(26,111,181,0.15)');
+  }
+
+  function flashTextarea(ta, color, shadow) {
+    ta.style.borderColor = color;
+    ta.style.boxShadow = '0 0 0 3px ' + shadow;
+    setTimeout(() => { ta.style.borderColor = ''; ta.style.boxShadow = ''; }, 1200);
   }
 
   /* ── User chat ── */
@@ -705,35 +750,20 @@
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('admin-screen').style.display = 'none';
     document.getElementById('user-screen').style.display = 'flex';
-    document.getElementById('user-username-label').textContent = currentUser.username;
-
+    document.getElementById('user-name').textContent = currentUser.username;
     const inner = document.getElementById('chat-inner');
     inner.innerHTML = '';
-
-    const rows = await sb.get('notes', '?id=eq.1&select=content');
+    const rows = await sbGet('notes', '?id=eq.1&select=content');
     const notes = rows && rows[0] ? rows[0].content : '';
-
     if (!notes) {
-      inner.innerHTML = `<div class="no-notes-notice">The admin hasn't added any notes yet. Check back later!</div>`;
+      inner.innerHTML = '<div class="no-notes-notice">The admin hasn\'t added any notes yet. Check back later!</div>';
       document.getElementById('chat-input').disabled = true;
       document.getElementById('send-btn').disabled = true;
       return;
     }
-
     document.getElementById('chat-input').disabled = false;
     document.getElementById('send-btn').disabled = false;
-
-    inner.innerHTML = `
-      <div class="welcome-msg">
-        <div class="welcome-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#2d6a4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-          </svg>
-        </div>
-        <h2>Hi, ${esc(currentUser.username)}!</h2>
-        <p>Ask me anything about the team notes. I'll only answer based on what's been shared.</p>
-      </div>`;
-
+    inner.innerHTML = '<div class="welcome-msg"><div class="welcome-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2d6a4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><h2>Hi, ' + esc(currentUser.username) + '!</h2><p>Ask me anything about the team notes. I\'ll only answer based on what\'s been shared.</p></div>';
     document.getElementById('chat-input').focus();
   }
 
@@ -742,11 +772,9 @@
     const welcome = inner.querySelector('.welcome-msg');
     if (welcome) welcome.remove();
     const row = document.createElement('div');
-    row.className = `msg-row ${role}`;
-    const initials = role === 'user' ? currentUser.username[0].toUpperCase() : 'AI';
-    row.innerHTML = `
-      <div class="msg-avatar ${role === 'user' ? 'usr' : 'bot'}">${initials}</div>
-      <div class="msg-bubble">${esc(text)}</div>`;
+    row.className = 'msg-row ' + role;
+    const init = role === 'user' ? currentUser.username[0].toUpperCase() : 'AI';
+    row.innerHTML = '<div class="msg-av ' + (role==='user'?'usr':'bot') + '">' + init + '</div><div class="msg-bubble">' + esc(text) + '</div>';
     inner.appendChild(row);
     scrollBottom();
     return row;
@@ -756,41 +784,29 @@
     const inner = document.getElementById('chat-inner');
     const row = document.createElement('div');
     row.className = 'typing-row';
-    row.innerHTML = `<div class="msg-avatar bot">AI</div><div class="typing-bubble"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+    row.innerHTML = '<div class="msg-av bot">AI</div><div class="typing-bubble"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
     inner.appendChild(row);
     scrollBottom();
     return row;
   }
 
-  function scrollBottom() {
-    const area = document.getElementById('chat-area');
-    area.scrollTop = area.scrollHeight;
-  }
+  function scrollBottom() { const a = document.getElementById('chat-area'); a.scrollTop = a.scrollHeight; }
 
   async function sendMsg() {
     const input = document.getElementById('chat-input');
     const q = input.value.trim();
     if (!q) return;
-
-    // Fetch latest notes & api key from Supabase
-    const rows = await sb.get('notes', '?id=eq.1&select=content,api_key');
-    const notes  = rows && rows[0] ? rows[0].content  : '';
-    const apiKey = rows && rows[0] ? rows[0].api_key  : '';
-
-    if (!apiKey) {
-      appendMsg('bot', '⚠️ The assistant is not configured yet. Please ask your admin to save the API key in the Notes tab.');
-      document.getElementById('send-btn').disabled = false;
-      return;
-    }
-
+    const rows = await sbGet('notes', '?id=eq.1&select=content,api_key');
+    const notes = rows && rows[0] ? rows[0].content : '';
+    const apiKey = rows && rows[0] ? rows[0].api_key : '';
+    if (!apiKey) { appendMsg('bot', '⚠️ The assistant is not configured yet. Please ask your admin to save the API key in the Notes tab.'); return; }
     input.value = '';
     document.getElementById('send-btn').disabled = true;
     appendMsg('user', q);
     const typingRow = appendTyping();
-
+    const systemPrompt = 'You are a helpful assistant. Answer questions strictly based on the notes below. If the information needed to answer is not found in the notes, respond with exactly: "Apologies, can\'t answer since inquiry is not in the admin\'s notes." Do not make up or infer information outside the notes.\n\n---\nNOTES:\n' + notes + '\n---';
     try {
-      const systemPrompt = `You are a helpful assistant. Answer questions strictly based on the notes below. If the information needed to answer is not found in the notes, respond with exactly: "Apologies, can't answer since inquiry is not in the admin's notes." Do not make up or infer information outside the notes.\n\n---\nNOTES:\n${notes}\n---`;
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
+      const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -798,262 +814,24 @@
           contents: [{ role: 'user', parts: [{ text: q }] }]
         })
       });
-
       const data = await res.json();
-      const answer = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't get a response.";
+      const answer = (data.candidates?.[0]?.content?.parts?.[0]?.text) || "Sorry, I couldn't get a response.";
       typingRow.remove();
       appendMsg('bot', answer);
-
-      // Save to Supabase history
-      await sb.post('history', { question: q, answer, username: currentUser.username });
+      await sbPost('history', { question: q, answer, username: currentUser.username });
     } catch(e) {
       typingRow.remove();
       appendMsg('bot', 'Something went wrong. Please try again.');
       console.error(e);
     }
-
     document.getElementById('send-btn').disabled = false;
     document.getElementById('chat-input').focus();
   }
 
-  function esc(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-
-  /* ── IMAGE ANALYZER ── */
-  let imgBase64 = null;
-  let imgMediaType = 'image/png';
-
-  function handleImgFile(file) {
-    if (!file || !file.type.startsWith('image/')) return;
-    imgMediaType = file.type || 'image/png';
-    const reader = new FileReader();
-    reader.onload = e => {
-      imgBase64 = e.target.result.split(',')[1];
-      document.getElementById('img-preview').src = e.target.result;
-      document.getElementById('img-preview-name').textContent = file.name;
-      document.getElementById('img-preview-wrap').classList.add('has-image');
-      document.getElementById('img-drop-zone').style.display = 'none';
-      document.getElementById('img-result').classList.remove('visible');
-    };
-    reader.readAsDataURL(file);
-  }
-
-  function handleImgDrop(e) {
-    e.preventDefault();
-    document.getElementById('img-drop-zone').classList.remove('drag-over');
-    const file = e.dataTransfer.files[0];
-    if (file) handleImgFile(file);
-  }
-
-  function clearImage() {
-    imgBase64 = null;
-    document.getElementById('img-preview').src = '';
-    document.getElementById('img-preview-wrap').classList.remove('has-image');
-    document.getElementById('img-drop-zone').style.display = '';
-    document.getElementById('img-result').classList.remove('visible');
-    document.getElementById('img-result-text').textContent = '';
-  }
-
-  // Paste from clipboard (Ctrl+V)
-  document.addEventListener('paste', e => {
-    if (!document.getElementById('apanel-notes').classList.contains('active')) return;
-    const items = e.clipboardData?.items;
-    if (!items) return;
-    for (const item of items) {
-      if (item.type.startsWith('image/')) {
-        handleImgFile(item.getAsFile());
-        break;
-      }
-    }
-  });
-
-  async function analyzeImage() {
-    if (!imgBase64) { alert('Please upload or paste an image first.'); return; }
-    // Try input field first, then fall back to what's saved in Supabase
-    let apiKey = document.getElementById('api-key-input').value.trim();
-    if (!apiKey) {
-      const rows = await sb.get('notes', '?id=eq.1&select=api_key');
-      apiKey = rows?.[0]?.api_key || '';
-    }
-    if (!apiKey) {
-      document.getElementById('img-result-text').textContent = '❌ No Gemini API key found. Please enter your AIza... key in the field above and click Save notes.';
-      document.getElementById('img-result').classList.add('visible');
-      return;
-    }
-
-    const btn = document.getElementById('img-analyze-btn');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span>Analyzing…';
-
-    const prompt = document.getElementById('img-prompt').value.trim() ||
-      'Extract and summarize all the important information from this image in a clear, structured format. Include any data, text, tables, or key details you can identify.';
-
-    try {
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{
-            role: 'user',
-            parts: [
-              { inline_data: { mime_type: imgMediaType, data: imgBase64 } },
-              { text: prompt }
-            ]
-          }]
-        })
-      });
-
-      const data = await res.json();
-      console.log('Gemini image response:', JSON.stringify(data));
-
-      // Check for API errors
-      if (data.error) {
-        document.getElementById('img-result-text').textContent = '❌ Error: ' + (data.error.message || 'API error. Check your Gemini key.');
-        document.getElementById('img-result').classList.add('visible');
-        btn.disabled = false; btn.textContent = 'Analyze';
-        return;
-      }
-
-      // Check for safety block
-      if (data.candidates?.[0]?.finishReason === 'SAFETY') {
-        document.getElementById('img-result-text').textContent = '⚠️ Image was blocked by safety filters. Try a different image.';
-        document.getElementById('img-result').classList.add('visible');
-        btn.disabled = false; btn.textContent = 'Analyze';
-        return;
-      }
-
-      const result = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Could not analyze the image. Make sure your Gemini API key is saved in the Notes tab.';
-      document.getElementById('img-result-text').textContent = result;
-      document.getElementById('img-result').classList.add('visible');
-    } catch(e) {
-      document.getElementById('img-result-text').textContent = '❌ Request failed: ' + e.message;
-      document.getElementById('img-result').classList.add('visible');
-      console.error(e);
-    }
-
-    btn.disabled = false;
-    btn.textContent = 'Analyze';
-  }
-
-  function appendToNotes() {
-    const result = document.getElementById('img-result-text').textContent;
-    if (!result) return;
-    const textarea = document.getElementById('notes-input');
-    const existing = textarea.value.trim();
-    const timestamp = new Date().toLocaleString();
-    const separator = existing ? '\n\n---\n' : '';
-    textarea.value = existing + separator + `[Image analysis — ${timestamp}]\n${result}`;
-    textarea.scrollTop = textarea.scrollHeight;
-    // Flash the textarea to show it was updated
-    textarea.style.borderColor = 'var(--accent)';
-    textarea.style.boxShadow = '0 0 0 3px rgba(45,106,79,0.15)';
-    setTimeout(() => { textarea.style.borderColor = ''; textarea.style.boxShadow = ''; }, 1200);
-  }
-
-  /* ── EXCEL READER ── */
-  let excelWorkbook = null;
-  let excelActiveSheet = null;
-  let excelParsedSheets = {};
-
-  function handleExcelDrop(e) {
-    e.preventDefault();
-    document.getElementById('excel-drop-zone').classList.remove('drag-over');
-    const file = e.dataTransfer.files[0];
-    if (file) handleExcelFile(file);
-  }
-
-  function handleExcelFile(file) {
-    if (!file) return;
-    const name = file.name.toLowerCase();
-    if (!name.endsWith('.xlsx') && !name.endsWith('.xls') && !name.endsWith('.csv')) {
-      alert('Please upload an .xlsx, .xls, or .csv file.');
-      return;
-    }
-    document.getElementById('excel-file-name').textContent = file.name;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      try {
-        const data = new Uint8Array(e.target.result);
-        excelWorkbook = XLSX.read(data, { type: 'array', cellDates: true });
-        excelParsedSheets = {};
-        excelWorkbook.SheetNames.forEach(sheetName => {
-          const ws = excelWorkbook.Sheets[sheetName];
-          excelParsedSheets[sheetName] = XLSX.utils.sheet_to_json(ws, { defval: '' });
-        });
-        const tabs = document.getElementById('excel-sheet-tabs');
-        tabs.innerHTML = excelWorkbook.SheetNames.map((n, i) =>
-          `<button class="sheet-tab ${i===0?'active':''}" onclick="selectSheet(this,'${n.replace(/\/g,'\\').replace(/'/g,"\'")}'">${n}</button>`
-        ).join('');
-        excelActiveSheet = excelWorkbook.SheetNames[0];
-        renderSheetPreview(excelActiveSheet);
-        document.getElementById('excel-drop-zone').style.display = 'none';
-        const loaded = document.getElementById('excel-loaded');
-        loaded.style.display = 'flex';
-        loaded.style.flexDirection = 'column';
-      } catch(err) {
-        alert('Could not read file: ' + err.message);
-      }
-    };
-    reader.readAsArrayBuffer(file);
-  }
-
-  function selectSheet(btn, sheetName) {
-    excelActiveSheet = sheetName;
-    document.querySelectorAll('.sheet-tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    renderSheetPreview(sheetName);
-  }
-
-  function renderSheetPreview(sheetName) {
-    const rows = excelParsedSheets[sheetName];
-    const preview = document.getElementById('excel-preview');
-    const countEl = document.getElementById('excel-row-count');
-    if (!rows || !rows.length) {
-      preview.innerHTML = '<p style="padding:16px;font-size:13px;color:var(--hint);">Sheet is empty.</p>';
-      countEl.textContent = '0 rows';
-      return;
-    }
-    const headers = Object.keys(rows[0]);
-    const previewRows = rows.slice(0, 50);
-    preview.innerHTML = `<table>
-      <thead><tr>${headers.map(h => `<th>${esc(String(h))}</th>`).join('')}</tr></thead>
-      <tbody>${previewRows.map(row =>
-        `<tr>${headers.map(h => `<td>${esc(String(row[h] ?? ''))}</td>`).join('')}</tr>`
-      ).join('')}</tbody>
-    </table>`;
-    countEl.textContent = `${rows.length} rows · ${headers.length} columns${rows.length > 50 ? ' (previewing first 50)' : ''}`;
-  }
-
-  function clearExcel() {
-    excelWorkbook = null;
-    excelActiveSheet = null;
-    excelParsedSheets = {};
-    document.getElementById('excel-loaded').style.display = 'none';
-    document.getElementById('excel-drop-zone').style.display = '';
-    document.getElementById('excel-file-input').value = '';
-  }
-
-  function appendExcelToNotes() {
-    if (!excelActiveSheet || !excelParsedSheets[excelActiveSheet]) return;
-    const rows = excelParsedSheets[excelActiveSheet];
-    if (!rows.length) { alert('Sheet is empty.'); return; }
-    const headers = Object.keys(rows[0]);
-    const timestamp = new Date().toLocaleString();
-    let text = `[Excel data — Sheet: "${excelActiveSheet}" — ${timestamp}]\n`;
-    text += headers.join(' | ') + '\n';
-    text += headers.map(() => '---').join(' | ') + '\n';
-    rows.forEach(row => { text += headers.map(h => String(row[h] ?? '')).join(' | ') + '\n'; });
-    const textarea = document.getElementById('notes-input');
-    const existing = textarea.value.trim();
-    textarea.value = existing ? existing + '\n\n---\n' + text : text;
-    textarea.scrollTop = textarea.scrollHeight;
-    textarea.style.borderColor = '#1a6fb5';
-    textarea.style.boxShadow = '0 0 0 3px rgba(26,111,181,0.15)';
-    setTimeout(() => { textarea.style.borderColor = ''; textarea.style.boxShadow = ''; }, 1200);
-  }
-
+  function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<!-- SheetJS loaded last so it never blocks the login -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </body>
 </html>
