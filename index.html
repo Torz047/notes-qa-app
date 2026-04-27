@@ -644,15 +644,20 @@
     document.getElementById('img-result').classList.add('visible');
   }
 
-  function appendImgToNotes() {
+  async function appendImgToNotes() {
     const result = document.getElementById('img-result-text').textContent;
     if (!result) return;
+    const btn = document.querySelector('#img-result .append-btn');
+    btn.disabled = true; btn.textContent = 'Saving…';
     const ta = document.getElementById('notes-input');
     const existing = ta.value.trim();
     const ts = new Date().toLocaleString();
     ta.value = existing ? existing + '\n\n---\n[Image analysis — ' + ts + ']\n' + result : '[Image analysis — ' + ts + ']\n' + result;
     ta.scrollTop = ta.scrollHeight;
+    await sbPatch('notes', '?id=eq.1', { content: ta.value.trim(), updated_at: new Date().toISOString() });
     flashTextarea(ta, 'var(--accent)', 'rgba(45,106,79,0.15)');
+    btn.disabled = false; btn.textContent = '✓ Saved to notes';
+    setTimeout(() => btn.textContent = '+ Add to notes', 2500);
   }
 
   /* ── Excel Reader ── */
@@ -723,10 +728,12 @@
     document.getElementById('xl-file-input').value = '';
   }
 
-  function appendXlToNotes() {
+  async function appendXlToNotes() {
     if (!xlActiveSheet || !xlSheets[xlActiveSheet]) return;
     const rows = xlSheets[xlActiveSheet];
     if (!rows.length) { alert('Sheet is empty.'); return; }
+    const btn = document.querySelector('#xl-loaded .append-btn');
+    btn.disabled = true; btn.textContent = 'Saving…';
     const headers = Object.keys(rows[0]);
     const ts = new Date().toLocaleString();
     let text = '[Excel data — Sheet: "' + xlActiveSheet + '" — ' + ts + ']\n';
@@ -736,7 +743,10 @@
     const existing = ta.value.trim();
     ta.value = existing ? existing + '\n\n---\n' + text : text;
     ta.scrollTop = ta.scrollHeight;
+    await sbPatch('notes', '?id=eq.1', { content: ta.value.trim(), updated_at: new Date().toISOString() });
     flashTextarea(ta, '#1a6fb5', 'rgba(26,111,181,0.15)');
+    btn.disabled = false; btn.textContent = '✓ Saved to notes';
+    setTimeout(() => btn.textContent = '+ Add to notes', 2500);
   }
 
   function flashTextarea(ta, color, shadow) {
