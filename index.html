@@ -804,8 +804,17 @@
 
   async function analyzeImage() {
     if (!imgBase64) { alert('Please upload or paste an image first.'); return; }
-    const apiKey = document.getElementById('api-key-input').value.trim();
-    if (!apiKey) { alert('Please enter your Anthropic API key first.'); return; }
+    // Try input field first, then fall back to what's saved in Supabase
+    let apiKey = document.getElementById('api-key-input').value.trim();
+    if (!apiKey) {
+      const rows = await sb.get('notes', '?id=eq.1&select=api_key');
+      apiKey = rows?.[0]?.api_key || '';
+    }
+    if (!apiKey) {
+      document.getElementById('img-result-text').textContent = '❌ No Gemini API key found. Please enter your AIza... key in the field above and click Save notes.';
+      document.getElementById('img-result').classList.add('visible');
+      return;
+    }
 
     const btn = document.getElementById('img-analyze-btn');
     btn.disabled = true;
@@ -830,11 +839,30 @@
       });
 
       const data = await res.json();
-      const result = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Could not analyze the image.';
+      console.log('Gemini image response:', JSON.stringify(data));
+
+      // Check for API errors
+      if (data.error) {
+        document.getElementById('img-result-text').textContent = '❌ Error: ' + (data.error.message || 'API error. Check your Gemini key.');
+        document.getElementById('img-result').classList.add('visible');
+        btn.disabled = false; btn.textContent = 'Analyze';
+        return;
+      }
+
+      // Check for safety block
+      if (data.candidates?.[0]?.finishReason === 'SAFETY') {
+        document.getElementById('img-result-text').textContent = '⚠️ Image was blocked by safety filters. Try a different image.';
+        document.getElementById('img-result').classList.add('visible');
+        btn.disabled = false; btn.textContent = 'Analyze';
+        return;
+      }
+
+      const result = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Could not analyze the image. Make sure your Gemini API key is saved in the Notes tab.';
       document.getElementById('img-result-text').textContent = result;
       document.getElementById('img-result').classList.add('visible');
     } catch(e) {
-      alert('Analysis failed. Check your API key and try again.');
+      document.getElementById('img-result-text').textContent = '❌ Request failed: ' + e.message;
+      document.getElementById('img-result').classList.add('visible');
       console.error(e);
     }
 
